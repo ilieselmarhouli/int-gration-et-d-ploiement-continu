@@ -8,9 +8,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-
-      - name: Afficher un message
-        run: echo "Hello, World!"
+      - uses: actions/setup-node@v7
+        with:
+        node-version: 24.18.0
 
       - uses: actions/cache@v5
         with:
@@ -18,9 +18,10 @@ jobs:
           key: npm-${{ hashFiles('package-lock.json') }}
 
       - run: npm ci
+      - run: npm test
 
-      - name: Lancer les tests
+      - if: always()
         run: |
-          echo "Lancement des tests..."
-          echo "## Résultat des tests" > "$GITHUB_STEP_SUMMARY"
-          echo "Tous les tests sont passés" >> "$GITHUB_STEP_SUMMARY"
+          echo "## Résultat des tests" >> "$GITHUB_STEP_SUMMARY"
+          echo "Status : ${{ job.status }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "Commit : ${{ github.sha }}" >> "$GITHUB_STEP_SUMMARY"
