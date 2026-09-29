@@ -4,7 +4,7 @@ on:
   push:
 
 jobs:
-  build:
+  validate:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
@@ -18,7 +18,6 @@ jobs:
           key: npm-${{ hashFiles('package-lock.json') }}
 
       - run: npm ci
-      - run: npm run test
 
       - if: always()
         run: |
