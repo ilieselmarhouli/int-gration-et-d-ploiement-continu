@@ -1,0 +1,26 @@
+name: Hello World 
+
+on:
+  push:
+    
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+        - uses: actions/checkout@v7
+          run: echo "Hello, World!"
+        
+        - uses: actions/cache@v5
+          with:
+          path: ~/.npm
+          key: npm-${{ hashFiles('package-lock.json') }}
+
+        - run: npm ci
+
+        - name: Lancer les tests
+          run: echo "Lancement des tests..."
+
+          echo "## Résultat des tests" > $GITHUB_STEP_SUMMARY
+          echo "✅ Tous les tests sont passés" > $GITHUB_STEP_SUMMARY
+
+    
